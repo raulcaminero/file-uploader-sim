@@ -9,7 +9,7 @@ export default function Layout({ children }) {
       await fetch('/api/logout', { method: 'POST', credentials: 'include' });
       router.push('/login');
     } catch (error) {
-      console.error('Error al cerrar sesión:', error);
+      console.error('Error closing session:', error);
       router.push('/login');
     }
   };

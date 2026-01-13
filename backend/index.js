@@ -20,15 +20,15 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-// Inicializar base de datos
+// Initialize database
 initializeDatabase().then(() => {
-  console.log('Base de datos inicializada');
+  console.log('Database initialized');
 }).catch((err) => {
-  console.error('Error al inicializar base de datos:', err);
+  console.error('Error initializing database:', err);
   process.exit(1);
 });
 
-// Endpoint para login (usuario hardcoded)
+// Login endpoint (hardcoded user)
 app.post('/api/login', (req, res, next) => {
   try {
     const { username, password } = req.body;
@@ -36,11 +36,11 @@ app.post('/api/login', (req, res, next) => {
     if (!username || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Usuario y contraseña son requeridos'
+        message: 'Username and password are required'
       });
     }
 
-    // Usuario hardcoded
+    // Hardcoded user
     if (username === 'demo' && password === 'demo123') {
       const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '24h' });
       
@@ -48,14 +48,14 @@ app.post('/api/login', (req, res, next) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        maxAge: 24 * 60 * 60 * 1000 // 24 horas
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
       });
 
       res.json({ success: true, token });
     } else {
       res.status(401).json({
         success: false,
-        message: 'Credenciales incorrectas'
+        message: 'Invalid credentials'
       });
     }
   } catch (error) {
@@ -63,13 +63,13 @@ app.post('/api/login', (req, res, next) => {
   }
 });
 
-// Endpoint para logout
+// Logout endpoint
 app.post('/api/logout', (req, res) => {
   res.clearCookie('token');
-  res.json({ success: true, message: 'Sesión cerrada' });
+  res.json({ success: true, message: 'Session closed' });
 });
 
-// Endpoint para subir metadata de archivos (múltiples)
+// Upload file metadata endpoint (multiple files)
 app.post('/api/upload', authenticateToken, async (req, res, next) => {
   try {
     const { files } = req.body;
@@ -77,27 +77,27 @@ app.post('/api/upload', authenticateToken, async (req, res, next) => {
     if (!files || !Array.isArray(files) || files.length === 0) {
       return res.status(400).json({
         success: false,
-        message: 'Se requiere un array de archivos'
+        message: 'Files array is required'
       });
     }
 
-    // Validar cada archivo
+    // Validate each file
     for (const file of files) {
       if (!file.name || typeof file.name !== 'string' || file.name.trim() === '') {
         return res.status(400).json({
           success: false,
-          message: 'Todos los archivos deben tener un nombre válido'
+          message: 'All files must have a valid name'
         });
       }
       if (!file.size || typeof file.size !== 'number' || file.size <= 0) {
         return res.status(400).json({
           success: false,
-          message: 'Todos los archivos deben tener un tamaño válido mayor a 0'
+          message: 'All files must have a valid size greater than 0'
         });
       }
     }
 
-    // Guardar cada archivo en la base de datos
+    // Save each file to the database
     const insertedFiles = [];
     for (const file of files) {
       try {
@@ -111,10 +111,10 @@ app.post('/api/upload', authenticateToken, async (req, res, next) => {
           size: file.size
         });
       } catch (dbError) {
-        console.error('Error al insertar archivo:', dbError);
+        console.error('Error inserting file:', dbError);
         return res.status(500).json({
           success: false,
-          message: 'Error al guardar metadata de archivos'
+          message: 'Error saving file metadata'
         });
       }
     }
@@ -129,7 +129,7 @@ app.post('/api/upload', authenticateToken, async (req, res, next) => {
   }
 });
 
-// Endpoint para listar archivos
+// List files endpoint
 app.get('/api/files', authenticateToken, async (req, res, next) => {
   try {
     const files = await dbAll(
@@ -140,7 +140,7 @@ app.get('/api/files', authenticateToken, async (req, res, next) => {
       success: true,
       files: files.map(file => ({
         ...file,
-        size: parseInt(file.size) // Asegurar que size sea número
+        size: parseInt(file.size) // Ensure size is a number
       }))
     });
   } catch (error) {
@@ -148,12 +148,12 @@ app.get('/api/files', authenticateToken, async (req, res, next) => {
   }
 });
 
-// Manejo de rutas no encontradas
+// Handle routes not found
 app.use(notFoundHandler);
 
-// Manejo de errores (debe ir al final)
+// Error handling (must be last)
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Backend escuchando en http://localhost:${PORT}`);
+  console.log(`Backend listening on http://localhost:${PORT}`);
 });

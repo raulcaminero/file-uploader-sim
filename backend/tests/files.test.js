@@ -1,14 +1,14 @@
 import sqlite3 from 'sqlite3';
 import { dbRun, dbAll, initializeDatabase } from '../database.js';
 
-// Mock de la base de datos en memoria para pruebas
+// Mock in-memory database for tests
 let testDb;
 
 beforeAll(async () => {
-  // Crear base de datos en memoria para pruebas
+  // Create in-memory database for tests
   testDb = new sqlite3.Database(':memory:');
   
-  // Promesas para métodos de la base de datos de prueba
+  // Promises for test database methods
   const testDbRun = (sql, params = []) => {
     return new Promise((resolve, reject) => {
       testDb.run(sql, params, function(err) {
@@ -27,7 +27,7 @@ beforeAll(async () => {
     });
   };
 
-  // Inicializar tabla
+  // Initialize table
   await testDbRun(
     `CREATE TABLE IF NOT EXISTS files (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,8 +37,8 @@ beforeAll(async () => {
     )`
   );
 
-  // Reemplazar temporalmente las funciones del módulo database
-  // Esto es una aproximación simplificada - en producción usarías un mock más robusto
+  // Temporarily replace database module functions
+  // This is a simplified approach - in production you would use a more robust mock
   global.testDbRun = testDbRun;
   global.testDbAll = testDbAll;
 });
@@ -53,7 +53,7 @@ afterAll((done) => {
 
 describe('Files Database Tests', () => {
   beforeEach(async () => {
-    // Limpiar tabla antes de cada test
+    // Clear table before each test
     await global.testDbRun('DELETE FROM files');
   });
 
@@ -68,7 +68,7 @@ describe('Files Database Tests', () => {
   });
 
   test('should retrieve all files', async () => {
-    // Insertar algunos archivos
+    // Insert some files
     await global.testDbRun(
       'INSERT INTO files (name, size) VALUES (?, ?)',
       ['file1.txt', 1024]

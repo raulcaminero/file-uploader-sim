@@ -5,7 +5,7 @@ export default function Home() {
   const router = useRouter();
   
   useEffect(() => {
-    // Verificar autenticación y redirigir
+    // Check authentication and redirect
     const checkAuth = async () => {
       try {
         const res = await fetch('/api/files', { credentials: 'include' });

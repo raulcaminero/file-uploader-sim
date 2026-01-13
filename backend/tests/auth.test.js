@@ -5,20 +5,20 @@ import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../middleware/auth.js';
 
-// Crear una app de prueba
+// Create a test app
 const createTestApp = () => {
   const app = express();
   app.use(bodyParser.json());
   app.use(cookieParser());
 
-  // Endpoint de login simplificado para pruebas
+  // Simplified login endpoint for tests
   app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Usuario y contraseña son requeridos'
+        message: 'Username and password are required'
       });
     }
 
@@ -29,7 +29,7 @@ const createTestApp = () => {
     } else {
       res.status(401).json({
         success: false,
-        message: 'Credenciales incorrectas'
+        message: 'Invalid credentials'
       });
     }
   });
@@ -62,7 +62,7 @@ describe('Authentication Tests', () => {
       .expect(401);
 
     expect(response.body.success).toBe(false);
-    expect(response.body.message).toContain('Credenciales incorrectas');
+    expect(response.body.message).toContain('Invalid credentials');
   });
 
   test('POST /api/login without username should return 400', async () => {
@@ -72,7 +72,7 @@ describe('Authentication Tests', () => {
       .expect(400);
 
     expect(response.body.success).toBe(false);
-    expect(response.body.message).toContain('requeridos');
+    expect(response.body.message).toContain('required');
   });
 
   test('POST /api/login without password should return 400', async () => {
@@ -82,7 +82,7 @@ describe('Authentication Tests', () => {
       .expect(400);
 
     expect(response.body.success).toBe(false);
-    expect(response.body.message).toContain('requeridos');
+    expect(response.body.message).toContain('required');
   });
 
   test('POST /api/login with empty body should return 400', async () => {

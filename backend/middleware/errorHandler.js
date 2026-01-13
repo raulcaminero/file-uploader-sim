@@ -1,34 +1,34 @@
-// Middleware de manejo de errores centralizado
+// Centralized error handling middleware
 export function errorHandler(err, req, res, next) {
   console.error('Error:', err);
 
-  // Errores de validación
+  // Validation errors
   if (err.name === 'ValidationError') {
     return res.status(400).json({
       success: false,
-      message: err.message || 'Error de validación'
+      message: err.message || 'Validation error'
     });
   }
 
-  // Errores de base de datos
+  // Database errors
   if (err.code && err.code.startsWith('SQLITE')) {
     return res.status(500).json({
       success: false,
-      message: 'Error en la base de datos'
+      message: 'Database error'
     });
   }
 
-  // Error por defecto
+  // Default error
   res.status(err.status || 500).json({
     success: false,
-    message: err.message || 'Error interno del servidor'
+    message: err.message || 'Internal server error'
   });
 }
 
-// Middleware para manejar rutas no encontradas
+// Middleware to handle routes not found
 export function notFoundHandler(req, res) {
   res.status(404).json({
     success: false,
-    message: 'Ruta no encontrada'
+    message: 'Route not found'
   });
 }

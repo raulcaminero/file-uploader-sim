@@ -1,4 +1,4 @@
-// Utilidades de autenticación
+// Authentication utilities
 export function setAuthToken(token) {
   if (typeof window !== 'undefined') {
     document.cookie = `token=${token}; path=/; max-age=${24 * 60 * 60}`;

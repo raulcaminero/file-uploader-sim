@@ -9,7 +9,7 @@ export default function Progress() {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
-    // Verificar autenticación
+    // Check authentication
     const checkAuth = async () => {
       try {
         const res = await fetch('/api/files', { credentials: 'include' });
@@ -24,18 +24,18 @@ export default function Progress() {
     };
     checkAuth();
 
-    // Simular progreso de subida
+    // Simulate upload progress
     const interval = setInterval(() => {
       setProgress(prev => {
         if (prev >= 100) {
           clearInterval(interval);
-          // Redirigir a success después de completar
+          // Redirect to success after completion
           setTimeout(() => {
             router.push('/upload/success');
           }, 500);
           return 100;
         }
-        // Incremento variable para efecto más realista
+        // Variable increment for more realistic effect
         const increment = prev < 50 ? Math.random() * 15 + 5 : Math.random() * 8 + 2;
         return Math.min(prev + increment, 100);
       });

@@ -1,141 +1,142 @@
 # File Uploader Sim
 
-Proyecto de demostración para subida de archivos (solo metadata) con autenticación, frontend en Next.js y backend en Express/Node.js.
+Demonstration project for file upload that only save metadata, with authentication, Next.js frontend and Express/Node.js backend.
 
-## Descripción
+## Description
 
-Sistema completo de subida de archivos que permite a los usuarios:
-- Iniciar sesión con credenciales predefinidas
-- Seleccionar y "subir" archivos (solo se guarda metadata: nombre y tamaño)
-- Ver el progreso de la subida
-- Visualizar un listado de todos los archivos subidos
+Complete file upload system that allows users to:
+- Login with predefined credentials
+- Select and "upload" files
+- View upload progress
+- View a list of all uploaded files
 
-El proyecto sigue un diseño oscuro tipo "Hearsay" con flujo completo de pantallas.
+The project follows a dark "Hearsay" style design with a complete screen flow.
 
-## Estructura del Proyecto
+## Project Structure
 
 ```
 file-uploader-sim/
-├── backend/          # API Express con Node.js
-│   ├── database.js   # Configuración de SQLite
-│   ├── index.js      # Servidor Express principal
-│   ├── middleware/   # Middleware de autenticación y errores
-│   └── tests/        # Tests del backend
-├── frontend/         # Aplicación Next.js (React)
-│   ├── pages/        # Páginas de la aplicación
-│   ├── components/   # Componentes reutilizables
-│   ├── styles/       # Estilos CSS
-│   └── lib/          # Utilidades
+├── backend/          # Express API with Node.js
+│   ├── database.js   # SQLite configuration
+│   ├── index.js      # Main Express server
+│   ├── middleware/   # Authentication and error middleware
+│   └── tests/        # Backend tests
+├── frontend/         # Next.js application (React)
+│   ├── pages/        # Application pages
+│   ├── components/   # Reusable components
+│   ├── styles/       # CSS styles
+│   └── lib/          # Utilities
 └── README.md
 ```
 
-## Tecnologías
+## Technologies
 
 ### Backend
-- **Node.js** + **Express** - Servidor API REST
-- **SQLite** - Base de datos persistente para metadata
-- **JWT** - Autenticación con tokens
+- **Node.js** + **Express** - REST API server
+- **SQLite** - Persistent database for metadata
+- **JWT** - Token-based authentication
 - **Jest** + **Supertest** - Testing
 
 ### Frontend
-- **Next.js 14** - Framework React
-- **React 18** - Biblioteca UI
-- **CSS Modules** - Estilos modulares
+- **Next.js 14** - React framework
+- **React 18** - UI library
+- **CSS Modules** - Modular styles
 
-## Instalación
+## Installation
 
-### Prerrequisitos
-- Node.js (v16 o superior)
-- npm o yarn
+### Prerequisites
+- Node.js (v16 or higher)
+- npm or yarn
 
-### Pasos
+### Steps
 
-1. **Clonar el repositorio** (o navegar al directorio del proyecto)
+1. **Clone the repository** (or navigate to the project directory)
 
-2. **Instalar dependencias del backend:**
+2. **Install backend dependencies:**
    ```bash
    cd backend
    npm install
    ```
 
-3. **Instalar dependencias del frontend:**
+3. **Install frontend dependencies:**
    ```bash
    cd ../frontend
    npm install
    ```
 
-## Ejecución
+## Running
 
-### Desarrollo
+### Development
 
-1. **Iniciar el backend** (puerto 4000):
+1. **Start the backend** (port 4000):
    ```bash
    cd backend
    npm start
    ```
 
-2. **Iniciar el frontend** (puerto 3000):
+2. **Start the frontend** (port 3000):
    ```bash
    cd frontend
    npm run dev
    ```
 
-3. **Acceder a la aplicación:**
-   - Abrir el navegador en `http://localhost:3000`
-   - Serás redirigido automáticamente al login
+3. **Access the application:**
+   - Open browser at `http://localhost:3000`
+   - You will be automatically redirected to login
 
-### Producción
+### Production
 
-1. **Compilar el frontend:**
+1. **Build the frontend:**
    ```bash
    cd frontend
    npm run build
    npm start
    ```
 
-2. **Iniciar el backend** (con variables de entorno si es necesario):
+2. **Start the backend** (with environment variables if needed):
    ```bash
    cd backend
    npm start
    ```
 
-## Credenciales de Acceso
+## Access Credentials
 
-- **Usuario:** `demo`
-- **Contraseña:** `demo123`
+- **Username:** `demo`
+- **Password:** `demo123`
 
-## Flujo de la Aplicación
+## Application Flow
 
-1. **Login** (`/login`) - Autenticación con usuario y contraseña
-2. **Dashboard** (`/dashboard`) - Pantalla inicial con opciones de selección
-3. **Upload** (`/upload`) - Selección y preparación de archivos para subir
-4. **Progress** (`/upload/progress`) - Pantalla de progreso durante la subida
-5. **Success** (`/upload/success`) - Confirmación de subida exitosa
-6. **Files** (`/files`) - Listado de todos los archivos subidos
+1. **Login** (`/login`) - Authentication with username and password
+2. **Dashboard** (`/dashboard`) - Initial screen with selection options
+3. **Social Selection** (`/social-selection`) - Social media platform selection (Facebook, Instagram, Threads)
+4. **Upload** (`/upload`) - File selection and preparation for upload
+5. **Progress** (`/upload/progress`) - Progress screen during upload
+6. **Success** (`/upload/success`) - Upload success confirmation
+7. **Files** (`/files`) - List of all uploaded files
 
 ## API Endpoints
 
-### Autenticación
-- `POST /api/login` - Iniciar sesión
+### Authentication
+- `POST /api/login` - Login
   - Body: `{ username: string, password: string }`
   - Response: `{ success: boolean, token: string }`
 
-- `POST /api/logout` - Cerrar sesión
+- `POST /api/logout` - Logout
   - Response: `{ success: boolean, message: string }`
 
-### Archivos
-- `POST /api/upload` - Subir metadata de archivos (requiere autenticación)
+### Files
+- `POST /api/upload` - Upload file metadata (requires authentication)
   - Body: `{ files: [{ name: string, size: number }, ...] }`
   - Response: `{ success: boolean, files: Array, count: number }`
 
-- `GET /api/files` - Listar archivos subidos (requiere autenticación)
+- `GET /api/files` - List uploaded files (requires authentication)
   - Response: `{ success: boolean, files: Array }`
 
-## Base de Datos
+## Database
 
-La base de datos SQLite se crea automáticamente en `backend/database.sqlite` al iniciar el servidor.
+The SQLite database is automatically created at `backend/database.sqlite` when the server starts.
 
-### Esquema
+### Schema
 ```sql
 CREATE TABLE files (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -147,57 +148,57 @@ CREATE TABLE files (
 
 ## Testing
 
-### Ejecutar tests del backend:
+### Run backend tests:
 ```bash
 cd backend
 npm test
 ```
 
-### Tests incluidos:
-- Tests de autenticación (`backend/tests/auth.test.js`)
-- Tests de base de datos (`backend/tests/files.test.js`)
+### Included tests:
+- Authentication tests (`backend/tests/auth.test.js`)
+- Database tests (`backend/tests/files.test.js`)
 
-## Características
+## Features
 
-- ✅ Autenticación con JWT y cookies httpOnly
-- ✅ Protección de rutas con middleware
-- ✅ Validación de datos en backend
-- ✅ Manejo de errores centralizado
-- ✅ Diseño responsive
-- ✅ Animaciones y transiciones suaves
-- ✅ Tests unitarios
-- ✅ Base de datos persistente
-- ✅ Metadata de archivos (nombre, tamaño, fecha)
+- ✅ JWT authentication with httpOnly cookies
+- ✅ Route protection with middleware
+- ✅ Backend data validation
+- ✅ Centralized error handling
+- ✅ Responsive design
+- ✅ Smooth animations and transitions
+- ✅ Unit tests
+- ✅ Persistent database
+- ✅ File metadata (name, size, date)
 
-## Notas Importantes
+## Important Notes
 
-- **Los archivos NO se almacenan físicamente** - Solo se guarda metadata (nombre y tamaño)
-- La base de datos SQLite se crea en el directorio `backend/`
-- Las cookies de autenticación son httpOnly para mayor seguridad
-- El frontend usa proxy de Next.js para las llamadas API (`/api/*` → `http://localhost:4000/api/*`)
+- **Files are NOT physically stored** - Only metadata is saved (name and size)
+- The SQLite database is created in the `backend/` directory
+- Authentication cookies are httpOnly for enhanced security
+- The frontend uses Next.js proxy for API calls (`/api/*` → `http://localhost:4000/api/*`)
 
-## Desarrollo y Contribución
+## Development and Contribution
 
-### Estructura de código:
-- El backend usa ES modules (`"type": "module"`)
-- El frontend usa Next.js con App Router (pages directory)
-- Los estilos usan CSS Modules para evitar conflictos
+### Code structure:
+- Backend uses ES modules (`"type": "module"`)
+- Frontend uses Next.js with App Router (pages directory)
+- Styles use CSS Modules to avoid conflicts
 
-### Variables de entorno (opcional):
-Crear `.env` en `backend/`:
+### Environment variables (optional):
+Create `.env` in `backend/`:
 ```
 PORT=4000
 JWT_SECRET=your-secret-key-here
 NODE_ENV=development
 ```
 
-## Despliegue
+## Deployment
 
-El proyecto puede desplegarse en:
-- **Frontend:** Vercel, Netlify, o cualquier servicio de hosting estático
-- **Backend:** Railway, Render, Heroku, o cualquier servicio Node.js
-- **Base de datos:** SQLite puede mantenerse o migrarse a PostgreSQL/MySQL según necesidades
+The project can be deployed to:
+- **Frontend:** Vercel, Netlify, or any static hosting service
+- **Backend:** Railway, Render, Heroku, or any Node.js service
+- **Database:** SQLite can be kept or migrated to PostgreSQL/MySQL as needed
 
-## Licencia
+## License
 
-Este proyecto es una demostración y puede usarse libremente para propósitos educativos.
+This project is a demonstration and can be freely used for educational purposes.

@@ -10,7 +10,7 @@ export default function Login() {
   const router = useRouter();
 
   useEffect(() => {
-    // Verificar si ya está autenticado
+    // Check if already authenticated
     const checkAuth = async () => {
       try {
         const res = await fetch('/api/files', { credentials: 'include' });
@@ -18,7 +18,7 @@ export default function Login() {
           router.push('/dashboard');
         }
       } catch (error) {
-        // No autenticado, permanecer en login
+        // Not authenticated, stay on login
       }
     };
     checkAuth();
@@ -42,10 +42,10 @@ export default function Login() {
       if (res.ok && data.success) {
         router.push('/dashboard');
       } else {
-        setError(data.message || 'Credenciales incorrectas');
+        setError(data.message || 'Invalid credentials');
       }
     } catch (error) {
-      setError('Error de conexión. Por favor, intenta de nuevo.');
+      setError('Connection error. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -59,16 +59,16 @@ export default function Login() {
           <span className={styles.logoText}>Hearsay</span>
         </div>
         
-        <h1 className={styles.title}>Iniciar Sesión</h1>
-        <p className={styles.subtitle}>Ingresa tus credenciales para continuar</p>
+        <h1 className={styles.title}>Login</h1>
+        <p className={styles.subtitle}>Enter your credentials to continue</p>
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.inputGroup}>
-            <label htmlFor="username">Usuario</label>
+            <label htmlFor="username">Username</label>
             <input
               id="username"
               type="text"
-              placeholder="Usuario"
+              placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
@@ -77,11 +77,11 @@ export default function Login() {
           </div>
 
           <div className={styles.inputGroup}>
-            <label htmlFor="password">Contraseña</label>
+            <label htmlFor="password">Password</label>
             <input
               id="password"
               type="password"
-              placeholder="Contraseña"
+              placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -96,12 +96,12 @@ export default function Login() {
             className={styles.submitButton}
             disabled={loading}
           >
-            {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+            {loading ? 'Logging in...' : 'Login'}
           </button>
 
           <div className={styles.info}>
-            <p>Usuario de prueba: <strong>demo</strong></p>
-            <p>Contraseña: <strong>demo123</strong></p>
+            <p>Test user: <strong>demo</strong></p>
+            <p>Password: <strong>demo123</strong></p>
           </div>
         </form>
       </div>

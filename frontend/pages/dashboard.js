@@ -8,7 +8,7 @@ export default function Dashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    // Verificar autenticación
+    // Check authentication
     const checkAuth = async () => {
       try {
         const res = await fetch('/api/files', { credentials: 'include' });
@@ -27,7 +27,11 @@ export default function Dashboard() {
   };
 
   const handleNonPhoneSource = () => {
-    router.push('/upload');
+    router.push('/social-selection?device=non-phone');
+  };
+
+  const handleDeviceSelect = (deviceType) => {
+    router.push(`/social-selection?device=${deviceType}`);
   };
 
   return (
@@ -41,7 +45,10 @@ export default function Dashboard() {
         </p>
 
         <div className={styles.deviceOptions}>
-          <div className={styles.deviceOption}>
+          <div 
+            className={styles.deviceOption}
+            onClick={() => handleDeviceSelect('iphone')}
+          >
             <div className={styles.deviceIconContainer}>
               <div className={styles.deviceImageWrapper}>
                 <Image 
@@ -57,7 +64,10 @@ export default function Dashboard() {
             <p className={styles.deviceSubtitle}>iOS versions 11.1+</p>
           </div>
 
-          <div className={styles.deviceOption}>
+          <div 
+            className={styles.deviceOption}
+            onClick={() => handleDeviceSelect('android')}
+          >
             <div className={styles.deviceIconContainer}>
               <div className={styles.deviceImageWrapper}>
                 <Image 

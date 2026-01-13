@@ -7,7 +7,7 @@ export default function Success() {
   const router = useRouter();
 
   useEffect(() => {
-    // Verificar autenticación
+    // Check authentication
     const checkAuth = async () => {
       try {
         const res = await fetch('/api/files', { credentials: 'include' });

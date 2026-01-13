@@ -10,7 +10,7 @@ export default function Files() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Verificar autenticación y cargar archivos
+    // Check authentication and load files
     const loadFiles = async () => {
       try {
         const res = await fetch('/api/files', { credentials: 'include' });
@@ -20,18 +20,18 @@ export default function Files() {
             router.push('/login');
             return;
           }
-          throw new Error('Error al cargar archivos');
+          throw new Error('Error loading files');
         }
 
         const data = await res.json();
         if (data.success) {
           setFiles(data.files);
         } else {
-          setError(data.message || 'Error al cargar archivos');
+          setError(data.message || 'Error loading files');
         }
       } catch (error) {
         console.error('Error:', error);
-        setError('Error de conexión. Por favor, intenta de nuevo.');
+        setError('Connection error. Please try again.');
       } finally {
         setLoading(false);
       }
@@ -51,7 +51,7 @@ export default function Files() {
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
     const date = new Date(dateString);
-    return date.toLocaleString('es-ES', {
+    return date.toLocaleString('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -64,7 +64,7 @@ export default function Files() {
     return (
       <Layout>
         <div className={styles.card}>
-          <div className={styles.loading}>Cargando archivos...</div>
+          <div className={styles.loading}>Loading files...</div>
         </div>
       </Layout>
     );
@@ -73,9 +73,9 @@ export default function Files() {
   return (
     <Layout>
       <div className={styles.card}>
-        <h1 className={styles.title}>Archivos Subidos</h1>
+        <h1 className={styles.title}>Uploaded Files</h1>
         <p className={styles.subtitle}>
-          Lista de todos los archivos que has subido
+          List of all files you have uploaded
         </p>
 
         {error && <div className={styles.error}>{error}</div>}
@@ -86,26 +86,26 @@ export default function Files() {
               <rect x="16" y="12" width="32" height="40" rx="2" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4"/>
               <path d="M24 24H40M24 32H40M24 40H32" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
             </svg>
-            <p>No hay archivos subidos aún</p>
+            <p>No files uploaded yet</p>
             <button 
               className={styles.uploadButton}
               onClick={() => router.push('/upload')}
             >
-              Subir Archivos
+              Upload Files
             </button>
           </div>
         ) : (
           <>
             <div className={styles.stats}>
-              Total de archivos: <strong>{files.length}</strong>
+              Total files: <strong>{files.length}</strong>
             </div>
             <div className={styles.tableContainer}>
               <table className={styles.table}>
                 <thead>
                   <tr>
-                    <th>Nombre</th>
-                    <th>Tamaño</th>
-                    <th>Fecha de Subida</th>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Upload Date</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -124,13 +124,13 @@ export default function Files() {
                 className={styles.actionButton}
                 onClick={() => router.push('/upload')}
               >
-                Subir Más Archivos
+                Upload More Files
               </button>
               <button 
                 className={styles.actionButtonSecondary}
                 onClick={() => router.push('/dashboard')}
               >
-                Volver al Dashboard
+                Back to Dashboard
               </button>
             </div>
           </>

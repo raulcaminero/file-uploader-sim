@@ -1,9 +1,9 @@
 import sqlite3 from 'sqlite3';
 
-// Crear conexión a base de datos SQLite persistente
+// Create database connection
 const db = new sqlite3.Database('./database.sqlite');
 
-// Inicializar base de datos
+// Initialize database
 export function initializeDatabase() {
   return new Promise((resolve, reject) => {
     db.serialize(() => {
@@ -26,7 +26,6 @@ export function initializeDatabase() {
   });
 }
 
-// Promesas para métodos de la base de datos
 export function dbRun(sql, params = []) {
   return new Promise((resolve, reject) => {
     db.run(sql, params, function(err) {

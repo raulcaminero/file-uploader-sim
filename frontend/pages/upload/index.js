@@ -11,7 +11,7 @@ export default function Upload() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Verificar autenticación
+    // Check authentication
     const checkAuth = async () => {
       try {
         const res = await fetch('/api/files', { credentials: 'include' });
@@ -30,12 +30,12 @@ export default function Upload() {
     const newFiles = files.map(file => ({
       name: file.name,
       size: file.size,
-      file: file // Mantener referencia al archivo original para validación
+      file: file // Keep reference to original file for validation
     }));
 
     setSelectedFiles(prev => [...prev, ...newFiles]);
     setError('');
-    // Resetear el input para permitir seleccionar el mismo archivo de nuevo
+    // Reset input to allow selecting the same file again
     e.target.value = '';
   };
 
@@ -45,7 +45,7 @@ export default function Upload() {
 
   const handleUpload = async () => {
     if (selectedFiles.length === 0) {
-      setError('Por favor, selecciona al menos un archivo');
+      setError('Please select at least one file');
       return;
     }
 
@@ -53,7 +53,7 @@ export default function Upload() {
     setError('');
 
     try {
-      // Preparar metadata de archivos (sin el objeto File)
+      // Prepare file metadata (without the File object)
       const filesMetadata = selectedFiles.map(file => ({
         name: file.name,
         size: file.size
@@ -71,16 +71,16 @@ export default function Upload() {
       const data = await res.json();
 
       if (res.ok && data.success) {
-        // Guardar información de archivos subidos en sessionStorage para la página de progreso
+        // Save uploaded files information to sessionStorage for progress page
         sessionStorage.setItem('uploadedFiles', JSON.stringify(data.files));
         router.push('/upload/progress');
       } else {
-        setError(data.message || 'Error al subir archivos');
+        setError(data.message || 'Error uploading files');
         setUploading(false);
       }
     } catch (error) {
       console.error('Error:', error);
-      setError('Error de conexión. Por favor, intenta de nuevo.');
+      setError('Connection error. Please try again.');
       setUploading(false);
     }
   };
